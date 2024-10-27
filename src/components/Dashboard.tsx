@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
-import { Activity, Bell, Heart, Thermometer } from 'lucide-react';
-import VitalCard from './VitalCard';
+import { Activity, Bell, Heart, LogOut, Thermometer } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import AppointmentCard from './AppointmentCard';
 import MedicationCard from './MedicationCard';
+import VitalCard from './VitalCard';
 
 const Dashboard = () => {
   const [notifications, setNotifications] = useState(2);
   const [showNotifications, setShowNotifications] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   const vitals = [
     { icon: Heart, label: 'Heart Rate', value: '72 bpm', change: '+2' },
     { icon: Thermometer, label: 'Temperature', value: '98.6°F', change: '-0.2' },
@@ -34,8 +42,16 @@ const Dashboard = () => {
 
   return (
     <div className="flex-1 p-8 bg-gray-50">
+
       <div className="flex justify-between items-center mb-8">
         <div>
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Logout
+          </button>
           <h1 className="text-2xl font-bold text-gray-800">Welcome back, John</h1>
           <p className="text-gray-600">Here's your health summary</p>
         </div>
